@@ -24,7 +24,7 @@ jobs:
         docker buildx create --use
         docker buildx build \
           --file Dockerfile \
-          --tag encore7/encore7/textclassifier:tc$(data +%s):latest \
+          --tag encore7/encore7/textclassifier:latest \
           --push .
     env:
       DOCKER_CLI_EXPERIMENTAL: enabled
