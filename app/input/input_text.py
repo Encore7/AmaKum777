@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+import warnings
+warnings.filterwarnings('ignore')
 
 
 # Class which describes the input text that needs to be classified

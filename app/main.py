@@ -1,24 +1,36 @@
-import pandas as pd
-from fastapi import FastAPI
-import uvicorn
 from app.input.input_text import InputTextList
 from app.predictor.predictor import Predictor
+
+from fastapi import FastAPI, HTTPException
+import uvicorn
+import pandas as pd
+import warnings
+
+warnings.filterwarnings('ignore')
 
 # Create the app object
 app = FastAPI()
 
-# Expose the prediction functionality, make a prediction from the passed
-# JSON data and return the predicted label
+
 @app.post("/predict")
-async def predict_text_label(data: InputTextList):
-    new_input_df = pd.DataFrame({"text": data.input_data_list})
-    predicted_df = Predictor(new_input_df)
+async def predict(data: InputTextList):
+    try:
+        # Check if the input data is empty
+        if not data.input_data_list:
+            raise HTTPException(status_code=400, detail="Input data is empty")
 
-    return predicted_df.predicted.to_json(orient="records")
+        # creating a dataframe from the input data
+        new_input_df = pd.DataFrame({"text": data.input_data_list})
+        # Make predictions
+        predicted_df = Predictor(new_input_df)
 
-# Run the API with uvicorn
+        return predicted_df.predicted.to_json(orient="records")
+
+    except Exception as exception:
+        # Handle unexpected errors
+        return {"error": str(exception)}
+
+
 # Will run on http://127.0.0.1:8000
 if __name__ == '__main__':
     uvicorn.run(app, host='127.0.0.1', port=8000)
-
-# uvicorn app:app --reload
