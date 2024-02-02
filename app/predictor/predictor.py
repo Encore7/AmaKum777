@@ -16,7 +16,6 @@ warnings.filterwarnings('ignore')
 class Predictor:
     # Load the feature mapper and the model
     root_directory = os.getcwd()
-    print(root_directory)
     try:
         classifier = tf.keras.models.load_model(f"{root_directory}/model_files/LSTM_model.h5")
     except Exception as model_loading_error:

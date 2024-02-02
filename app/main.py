@@ -18,7 +18,6 @@ async def predict(data: InputTextList):
         # Check if the input data is empty
         if not data.input_data_list:
             raise HTTPException(status_code=400, detail="Input data is empty")
-
         # creating a dataframe from the input data
         new_input_df = pd.DataFrame({"text": data.input_data_list})
         # Make predictions
@@ -26,6 +25,8 @@ async def predict(data: InputTextList):
 
         return predicted_df.predicted.to_json(orient="records")
 
+    except HTTPException as http_exception:
+        raise http_exception
     except Exception as exception:
         # Handle unexpected errors
         return {"error": str(exception)}

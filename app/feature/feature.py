@@ -1,4 +1,4 @@
-from tensorflow.keras.preprocessing.sequence import pad_sequences
+import tensorflow as tf
 import numpy as np
 import logging
 
@@ -18,7 +18,7 @@ class FeatureMapper:
             # Mapping the text from train data to features text
             tokenize_df = tokenizer.texts_to_sequences(data[column].values)
             # Padding the text to a maximum length of 75
-            padded_df = pad_sequences(tokenize_df, maxlen=75)
+            padded_df = tf.keras.preprocessing.sequence.pad_sequences(tokenize_df, maxlen=75)
 
             return padded_df
 
